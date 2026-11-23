@@ -1,0 +1,186 @@
+{
+  "disease_id": "diabetes",
+  "disease_name": "Type 2 Diabetes Risk Screening",
+  "selected_model_key": "random_forest",
+  "selected_model_name": "Random Forest",
+  "model_family": "Bagged Ensemble Classifier",
+  "model_description": "Ensemble of 200 regularized decision trees (max_depth=8, min_samples_leaf=4) using bootstrap aggregation and balanced class weights to capture feature interactions.",
+  "supports_probability": true,
+  "selection_criteria": {
+    "method": "5-fold Stratified Cross-Validation on Training Set (80%)",
+    "formula": "0.45 * CV_Recall + 0.35 * CV_ROC_AUC + 0.20 * CV_F1",
+    "rationale": "Random Forest achieved the highest 5-fold stratified cross-validation clinical screening score (0.7745), defined as 0.45\u00d7Recall + 0.35\u00d7ROC-AUC + 0.20\u00d7F1-Score on the training set. Prioritizing sensitivity (Recall) alongside ROC-AUC minimizes missed high-risk cases (False Negatives) while preserving reliable overall discrimination without peeking at the hold-out test set."
+  },
+  "training_configuration": {
+    "random_state": 42,
+    "test_size": 0.2,
+    "train_samples": 614,
+    "test_samples": 154,
+    "cv_folds": 5,
+    "stratified": true,
+    "leakage_prevention": "Train/test split performed before preprocessing. Invalid zero replacement, median imputation, and z-score standardization are encapsulated inside a scikit-learn Pipeline fitted exclusively on training folds.",
+    "class_weighting": "balanced",
+    "training_fitted_medians": {
+      "Pregnancies": 3.0,
+      "Glucose": 117.0,
+      "BloodPressure": 72.0,
+      "SkinThickness": 29.0,
+      "Insulin": 125.0,
+      "BMI": 32.4,
+      "DiabetesPedigreeFunction": 0.3825,
+      "Age": 29.0
+    }
+  },
+  "features": [
+    {
+      "name": "Pregnancies",
+      "label": "Number of Pregnancies",
+      "unit": "count",
+      "description": "Total number of times pregnant (enter 0 if none).",
+      "clinical_reference": "Typical range: 0\u201317",
+      "min_value": 0,
+      "max_value": 25,
+      "step": 1,
+      "allow_zero": true,
+      "integer_only": true,
+      "placeholder": "e.g., 2"
+    },
+    {
+      "name": "Glucose",
+      "label": "Plasma Glucose Concentration",
+      "unit": "mg/dL",
+      "description": "Plasma glucose measured 2 hours after an oral glucose tolerance test (OGTT).",
+      "clinical_reference": "Normal 2-hr OGTT: < 140 mg/dL | Prediabetes: 140\u2013199 mg/dL",
+      "min_value": 40,
+      "max_value": 400,
+      "step": 1,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 118"
+    },
+    {
+      "name": "BloodPressure",
+      "label": "Diastolic Blood Pressure",
+      "unit": "mm Hg",
+      "description": "Resting diastolic blood pressure (the bottom number in a blood pressure reading).",
+      "clinical_reference": "Normal diastolic: 60\u201380 mm Hg",
+      "min_value": 24,
+      "max_value": 200,
+      "step": 1,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 72"
+    },
+    {
+      "name": "SkinThickness",
+      "label": "Triceps Skinfold Thickness",
+      "unit": "mm",
+      "description": "Triceps skinfold thickness measured with skinfold calipers to estimate subcutaneous fat.",
+      "clinical_reference": "Typical adult range: 10\u201350 mm",
+      "min_value": 5,
+      "max_value": 110,
+      "step": 0.5,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 26"
+    },
+    {
+      "name": "Insulin",
+      "label": "2-Hour Serum Insulin",
+      "unit": "\u00b5U/mL",
+      "description": "2-hour post-load serum insulin level from a laboratory glucose tolerance blood panel.",
+      "clinical_reference": "Typical 2-hr range: 16\u2013166 \u00b5U/mL",
+      "min_value": 10,
+      "max_value": 900,
+      "step": 1,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 94"
+    },
+    {
+      "name": "BMI",
+      "label": "Body Mass Index (BMI)",
+      "unit": "kg/m\u00b2",
+      "description": "Weight in kilograms divided by height in meters squared (kg/m\u00b2).",
+      "clinical_reference": "Normal: 18.5\u201324.9 | Overweight: 25.0\u201329.9 | Obese: \u2265 30.0",
+      "min_value": 10.0,
+      "max_value": 75.0,
+      "step": 0.1,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 26.4"
+    },
+    {
+      "name": "DiabetesPedigreeFunction",
+      "label": "Diabetes Pedigree Function",
+      "unit": "score",
+      "description": "Quantitative score reflecting genetic and family history predisposition to diabetes.",
+      "clinical_reference": "Dataset range: 0.078\u20132.420 (higher indicates stronger family history)",
+      "min_value": 0.05,
+      "max_value": 3.0,
+      "step": 0.001,
+      "allow_zero": false,
+      "integer_only": false,
+      "placeholder": "e.g., 0.351"
+    },
+    {
+      "name": "Age",
+      "label": "Age",
+      "unit": "years",
+      "description": "Patient age in completed years. Note: training cohort consists of adults aged 21+.",
+      "clinical_reference": "Training dataset cohort: 21\u201381 years",
+      "min_value": 18,
+      "max_value": 120,
+      "step": 1,
+      "allow_zero": false,
+      "integer_only": true,
+      "placeholder": "e.g., 34"
+    }
+  ],
+  "feature_order": [
+    "Pregnancies",
+    "Glucose",
+    "BloodPressure",
+    "SkinThickness",
+    "Insulin",
+    "BMI",
+    "DiabetesPedigreeFunction",
+    "Age"
+  ],
+  "zero_as_missing_columns": [
+    "Glucose",
+    "BloodPressure",
+    "SkinThickness",
+    "Insulin",
+    "BMI"
+  ],
+  "artifact_path": "models\\diabetes_pipeline.joblib",
+  "trained_at_utc": "2026-11-22T17:39:48.395887+00:00",
+  "versions": {
+    "python": "3.14.7",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.1.1",
+    "numpy": "2.5.5",
+    "joblib": "1.6.0"
+  },
+  "supported_diseases": [
+    {
+      "id": "diabetes",
+      "name": "Diabetes Risk Screening",
+      "status": "active",
+      "dataset": "Pima Indians Diabetes Database (NIDDK / UCI)"
+    },
+    {
+      "id": "cardiovascular",
+      "name": "Cardiovascular Disease Risk",
+      "status": "planned",
+      "dataset": "Extensible Registry Architecture (UCI Heart Disease Ready)"
+    },
+    {
+      "id": "chronic_kidney",
+      "name": "Chronic Kidney Disease Risk",
+      "status": "planned",
+      "dataset": "Extensible Registry Architecture (UCI CKD Ready)"
+    }
+  ]
+}

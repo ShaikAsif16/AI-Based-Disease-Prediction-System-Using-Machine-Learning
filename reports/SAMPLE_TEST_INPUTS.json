@@ -1,0 +1,66 @@
+{
+  "description": "Sample test payloads for POST /api/predict verification (evaluated live by the trained Random Forest pipeline).",
+  "valid_test_cases": [
+    {
+      "name": "Low-Risk Clinical Reference Profile",
+      "payload": {
+        "Pregnancies": 1,
+        "Glucose": 92,
+        "BloodPressure": 68,
+        "SkinThickness": 21,
+        "Insulin": 64,
+        "BMI": 22.8,
+        "DiabetesPedigreeFunction": 0.215,
+        "Age": 25
+      }
+    },
+    {
+      "name": "Borderline Metabolic Profile",
+      "payload": {
+        "Pregnancies": 3,
+        "Glucose": 134,
+        "BloodPressure": 78,
+        "SkinThickness": 30,
+        "Insulin": 130,
+        "BMI": 29.6,
+        "DiabetesPedigreeFunction": 0.485,
+        "Age": 39
+      }
+    },
+    {
+      "name": "Elevated-Risk Clinical Profile",
+      "payload": {
+        "Pregnancies": 6,
+        "Glucose": 176,
+        "BloodPressure": 86,
+        "SkinThickness": 36,
+        "Insulin": 215,
+        "BMI": 35.4,
+        "DiabetesPedigreeFunction": 0.782,
+        "Age": 52
+      }
+    }
+  ],
+  "invalid_validation_test_cases": [
+    {
+      "name": "Missing Required Fields (Expect HTTP 400)",
+      "payload": {
+        "Pregnancies": 2,
+        "Glucose": 115
+      }
+    },
+    {
+      "name": "Physiologically Impossible Zero Glucose & BMI (Expect HTTP 400)",
+      "payload": {
+        "Pregnancies": 0,
+        "Glucose": 0,
+        "BloodPressure": 72,
+        "SkinThickness": 24,
+        "Insulin": 85,
+        "BMI": 0,
+        "DiabetesPedigreeFunction": 0.31,
+        "Age": 31
+      }
+    }
+  ]
+}
