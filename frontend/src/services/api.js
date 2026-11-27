@@ -29,7 +29,7 @@ async function requestJson(endpoint, options = {}) {
     });
   } catch {
     throw new ApiError(
-      'Unable to reach the Flask ML backend server. Please verify the backend is running on http://127.0.0.1:5000.',
+      'Unable to reach the ML backend service. If deployed on a free tier, the server may be waking up—please retry in a few seconds.',
       0
     );
   }

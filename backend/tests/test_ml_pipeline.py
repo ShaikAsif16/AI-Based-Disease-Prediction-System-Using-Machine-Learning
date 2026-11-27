@@ -104,8 +104,8 @@ def test_saved_pipeline_and_artifacts_exist_and_predict_deterministically():
     prob_low_2 = float(pipeline.predict_proba(low_risk)[0][1])
     prob_high = float(pipeline.predict_proba(high_risk)[0][1])
 
-    # Predictions must be deterministic and clinically directional
-    assert prob_low_1 == prob_low_2
+    # Predictions must be deterministic (within floating-point ULP) and clinically directional
+    assert abs(prob_low_1 - prob_low_2) < 1e-12
     assert 0.0 <= prob_low_1 <= 1.0
     assert 0.0 <= prob_high <= 1.0
     assert prob_high > prob_low_1

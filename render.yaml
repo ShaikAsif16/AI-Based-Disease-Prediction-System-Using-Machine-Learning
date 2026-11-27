@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ai-disease-prediction-system
+    runtime: docker
+    plan: free
+    region: singapore
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: MPLBACKEND
+        value: Agg

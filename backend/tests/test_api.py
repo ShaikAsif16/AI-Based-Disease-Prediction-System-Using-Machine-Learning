@@ -126,3 +126,19 @@ def test_sample_inputs_endpoint(client):
     assert resp.status_code == 200
     data = resp.get_json()
     assert len(data["profiles"]) == 3
+
+
+def test_spa_routes_and_api_404(client):
+    # Built frontend/dist/index.html is served on root and SPA client routes
+    r_root = client.get("/")
+    assert r_root.status_code == 200
+    assert b'id="root"' in r_root.data
+
+    r_spa = client.get("/analytics")
+    assert r_spa.status_code == 200
+    assert b'id="root"' in r_spa.data
+
+    # Unknown /api/* endpoints still return structured JSON 404
+    r_api_404 = client.get("/api/nonexistent")
+    assert r_api_404.status_code == 404
+    assert r_api_404.get_json()["error"] == "not_found"
